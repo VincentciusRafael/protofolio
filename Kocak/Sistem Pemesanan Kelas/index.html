@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistem pemesanan kelas untuk dewasa, anak-anak, dan les privat. Daftar sekarang!">
+    <title>Akademi Belajar - Sistem Pemesanan Kelas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .dropdown:hover .dropdown-menu { display: block; }
+        .active-nav { border-bottom: 2px solid #f59e0b; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide { animation: slideIn 0.3s ease-out; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-3xl text-amber-500"></i>
+                    <span class="text-2xl font-bold text-gray-800">Akademi Belajar</span>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="#dewasa" class="text-gray-700 hover:text-amber-500 transition">Dewasa</a>
+                    <a href="#anak" class="text-gray-700 hover:text-amber-500 transition">Anak-anak</a>
+                    <a href="#liburan" class="text-gray-700 hover:text-amber-500 transition">Liburan</a>
+                    <a href="#privat" class="text-gray-700 hover:text-amber-500 transition">Les Privat</a>
+                    <a href="#galeri" class="text-gray-700 hover:text-amber-500 transition">Galeri</a>
+                    <a href="#blog" class="text-gray-700 hover:text-amber-500 transition">Blog</a>
+                    <a href="#tentang" class="text-gray-700 hover:text-amber-500 transition">Tentang</a>
+                    <a href="#kontak" class="text-gray-700 hover:text-amber-500 transition">Kontak</a>
+                </nav>
+
+                <button onclick="showBookingModal()" class="hidden md:block bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-lg font-semibold transition transform hover:scale-105">
+                    <i class="fas fa-calendar-check mr-2"></i>Pesan Sekarang
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <nav id="mobileMenu" class="hidden md:hidden pb-4 animate-slide">
+                <a href="#dewasa" class="block py-2 text-gray-700 hover:text-amber-500">Dewasa</a>
+                <a href="#anak" class="block py-2 text-gray-700 hover:text-amber-500">Anak-anak</a>
+                <a href="#liburan" class="block py-2 text-gray-700 hover:text-amber-500">Liburan</a>
+                <a href="#privat" class="block py-2 text-gray-700 hover:text-amber-500">Les Privat</a>
+                <a href="#galeri" class="block py-2 text-gray-700 hover:text-amber-500">Galeri</a>
+                <a href="#blog" class="block py-2 text-gray-700 hover:text-amber-500">Blog</a>
+                <a href="#tentang" class="block py-2 text-gray-700 hover:text-amber-500">Tentang</a>
+                <a href="#kontak" class="block py-2 text-gray-700 hover:text-amber-500">Kontak</a>
+                <button onclick="showBookingModal()" class="w-full bg-amber-500 text-white px-6 py-2 rounded-lg mt-2">
+                    Pesan Sekarang
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-amber-500 to-orange-600 text-white py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Wujudkan Potensi Anda</h1>
+            <p class="text-xl md:text-2xl mb-8">Kelas berkualitas untuk segala usia dengan instruktur berpengalaman</p>
+            <button onclick="showBookingModal()" class="bg-white text-amber-600 px-8 py-4 rounded-lg text-lg font-bold hover:bg-gray-100 transition transform hover:scale-105">
+                <i class="fas fa-rocket mr-2"></i>Mulai Belajar Sekarang
+            </button>
+        </div>
+    </section>
+
+    <!-- Kelas Dewasa -->
+    <section id="dewasa" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Kelas Dewasa</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 rounded-lg p-6 hover:shadow-xl transition">
+                    <div class="text-amber-500 text-4xl mb-4"><i class="fas fa-language"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Bahasa Inggris</h3>
+                    <p class="text-gray-600 mb-4">Program 8 minggu intensif untuk meningkatkan kemampuan bahasa Inggris Anda</p>
+                    <div class="mb-4">
+                        <span class="text-sm text-gray-500">Sisa Tempat: <strong class="text-green-600">5/15</strong></span>
+                    </div>
+                    <button onclick="bookClass('Bahasa Inggris Dewasa', 'dewasa')" class="w-full bg-amber-500 text-white py-2 rounded-lg hover:bg-amber-600 transition">
+                        Pesan Kelas
+                    </button>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-6 hover:shadow-xl transition">
+                    <div class="text-amber-500 text-4xl mb-4"><i class="fas fa-laptop-code"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Pemrograman</h3>
+                    <p class="text-gray-600 mb-4">Belajar coding dari dasar hingga mahir dalam 8 minggu</p>
+                    <div class="mb-4">
+                        <span class="text-sm text-gray-500">Sisa Tempat: <strong class="text-green-600">8/12</strong></span>
+                    </div>
+                    <button onclick="bookClass('Pemrograman Dewasa', 'dewasa')" class="w-full bg-amber-500 text-white py-2 rounded-lg hover:bg-amber-600 transition">
+                        Pesan Kelas
+                    </button>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-6 hover:shadow-xl transition">
+                    <div class="text-amber-500 text-4xl mb-4"><i class="fas fa-paint-brush"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Seni & Desain</h3>
+                    <p class="text-gray-600 mb-4">Kembangkan kreativitas Anda dengan instruktur profesional</p>
+                    <div class="mb-4">
+                        <span class="text-sm text-gray-500">Sisa Tempat: <strong class="text-red-600">0/10</strong> | <span class="text-blue-600">Daftar Tunggu</span></span>
+                    </div>
+                    <button onclick="joinWaitlist('Seni & Desain Dewasa')" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                        Daftar Tunggu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kelas Anak-anak -->
+    <section id="anak" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Kelas Anak-anak</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg p-6 hover:shadow-xl transition">
+                    <div class="text-amber-500 text-4xl mb-4"><i class="fas fa-book-reader"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Membaca & Menulis</h3>
+                    <p class="text-gray-600 mb-4">Usia 5-8 tahun | 8 minggu</p>
+                    <div class="mb-4">
+                        <span class="text-sm text-gray-500">Sisa Tempat: <strong class="text-green-600">6/12</strong></span>
+                    </div>
+                    <button onclick="bookClass('Membaca & Menulis Anak', 'anak')" class="w-full bg-amber-500 text-white py-2 rounded-lg hover:bg-amber-600 transition">
+                        Pesan Kelas
+                    </button>
+                </div>
+                <div class="bg-white rounded-lg p-6 hover:shadow-xl transition">
+                    <div class="text-amber-500 text-4xl mb-4"><i class="fas fa-calculator"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Matematika</h3>
+                    <p class="text-gray-600 mb-4">Usia 7-12 tahun | 8 minggu</p>
+                    <div class="mb-4">
+                        <span class="text-sm text-gray-500">Sisa Tempat: <strong class="text-green-600">4/10</strong></span>
+                    </div>
+                    <button onclick="bookClass('Matematika Anak', 'anak')" class="w-full bg-amber-500 text-white py-2 rounded-lg hover:bg-amber-600 transition">
+                        Pesan Kelas
+                    </button>
+                </div>
+                <div class="bg-white rounded-lg p-6 hover:shadow-xl transition">
+                    <div class="text-amber-500 text-4xl mb-4"><i class="fas fa-robot"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Robotik</h3>
+                    <p class="text-gray-600 mb-4">Usia 9-14 tahun | 8 minggu</p>
+                    <div class="mb-4">
+                        <span class="text-sm text-gray-500">Sisa Tempat: <strong class="text-green-600">7/15</strong></span>
+                    </div>
+                    <button onclick="bookClass('Robotik Anak', 'anak')" class="w-full bg-amber-500 text-white py-2 rounded-lg hover:bg-amber-600 transition">
+                        Pesan Kelas
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kelas Liburan -->
+    <section id="liburan" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Program Liburan</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-6 hover:shadow-xl transition">
+                    <div class="text-blue-600 text-4xl mb-4"><i class="fas fa-sun"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Kamp Musim Panas</h3>
+                    <p class="text-gray-600 mb-4">Program 2 minggu penuh aktivitas edukatif dan menyenangkan</p>
+                    <button onclick="bookClass('Kamp Musim Panas', 'liburan')" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                        Daftar Sekarang
+                    </button>
+                </div>
+                <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-6 hover:shadow-xl transition">
+                    <div class="text-green-600 text-4xl mb-4"><i class="fas fa-tree"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Petualangan Alam</h3>
+                    <p class="text-gray-600 mb-4">Belajar tentang alam dan lingkungan melalui kegiatan outdoor</p>
+                    <button onclick="bookClass('Petualangan Alam', 'liburan')" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+                        Daftar Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Les Privat -->
+    <section id="privat" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4">Les Privat</h2>
+            <p class="text-center text-gray-600 mb-12">Pembelajaran individual dengan jadwal fleksibel</p>
+            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">Keuntungan Les Privat:</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>Perhatian penuh dari instruktur</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>Jadwal yang disesuaikan dengan kebutuhan Anda</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>Materi disesuaikan dengan level kemampuan</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>Progress belajar yang lebih cepat</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">Mata Pelajaran:</h3>
+                        <div class="space-y-2">
+                            <span class="inline-block bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm mr-2 mb-2">Matematika</span>
+                            <span class="inline-block bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm mr-2 mb-2">Bahasa Inggris</span>
+                            <span class="inline-block bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm mr-2 mb-2">Sains</span>
+                            <span class="inline-block bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm mr-2 mb-2">Pemrograman</span>
+                            <span class="inline-block bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm mr-2 mb-2">Musik</span>
+                            <span class="inline-block bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm mr-2 mb-2">Seni</span>
+                        </div>
+                        <button onclick="bookClass('Les Privat', 'privat')" class="w-full mt-6 bg-amber-500 text-white py-3 rounded-lg hover:bg-amber-600 transition font-semibold">
+                            Konsultasi Gratis
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galeri -->
+    <section id="galeri" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Galeri Kegiatan</h2>
+            <div class="grid md:grid-cols-4 gap-4">
+                <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden hover:scale-105 transition">
+                    <div class="w-full h-full flex items-center justify-center text-gray-400">
+                        <i class="fas fa-image text-6xl"></i>
+                    </div>
+                </div>
+                <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden hover:scale-105 transition">
+                    <div class="w-full h-full flex items-center justify-center text-gray-400">
+                        <i class="fas fa-image text-6xl"></i>
+                    </div>
+                </div>
+                <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden hover:scale-105 transition">
+                    <div class="w-full h-full flex items-center justify-center text-gray-400">
+                        <i class="fas fa-image text-6xl"></i>
+                    </div>
+                </div>
+                <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden hover:scale-105 transition">
+                    <div class="w-full h-full flex items-center justify-center text-gray-400">
+                        <i class="fas fa-image text-6xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog -->
+    <section id="blog" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Artikel Terbaru</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-newspaper text-6xl text-gray-400"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-2">Tips Belajar Efektif untuk Anak</h3>
+                        <p class="text-gray-600 text-sm mb-4">Temukan strategi terbaik untuk membantu anak belajar dengan lebih efektif...</p>
+                        <a href="#" class="text-amber-500 font-semibold hover:text-amber-600">Baca Selengkapnya →</a>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-newspaper text-6xl text-gray-400"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-2">Pentingnya Pendidikan STEM</h3>
+                        <p class="text-gray-600 text-sm mb-4">Mengapa pendidikan STEM penting untuk masa depan anak Anda...</p>
+                        <a href="#" class="text-amber-500 font-semibold hover:text-amber-600">Baca Selengkapnya →</a>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-newspaper text-6xl text-gray-400"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-2">Manfaat Les Privat vs Kelompok</h3>
+                        <p class="text-gray-600 text-sm mb-4">Memilih metode pembelajaran yang tepat untuk anak Anda...</p>
+                        <a href="#" class="text-amber-500 font-semibold hover:text-amber-600">Baca Selengkapnya →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tentang -->
+    <section id="tentang" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-6">Tentang Kami</h2>
+                <p class="text-gray-600 text-lg mb-8">
+                    Akademi Belajar telah melayani komunitas selama lebih dari 10 tahun dengan menyediakan program pendidikan berkualitas tinggi untuk segala usia. Tim instruktur berpengalaman kami berkomitmen untuk membantu setiap siswa mencapai potensi maksimal mereka.
+                </p>
+                <div class="grid md:grid-cols-3 gap-8 mt-12">
+                    <div>
+                        <div class="text-4xl font-bold text-amber-500 mb-2">1000+</div>
+                        <div class="text-gray-600">Siswa Aktif</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-amber-500 mb-2">50+</div>
+                        <div class="text-gray-600">Instruktur Profesional</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-amber-500 mb-2">98%</div>
+                        <div class="text-gray-600">Tingkat Kepuasan</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontak -->
+    <section id="kontak" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Hubungi Kami</h2>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Informasi Kontak</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-amber-500 mr-3 mt-1"></i>
+                            <span>Jl. Pendidikan No. 123, Surabaya</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-phone text-amber-500 mr-3 mt-1"></i>
+                            <span>(031) 1234-5678</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope text-amber-500 mr-3 mt-1"></i>
+                            <span>info@akademibelajar.com</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-clock text-amber-500 mr-3 mt-1"></i>
+                            <span>Senin - Sabtu: 08:00 - 20:00</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <form class="space-y-4">
+                        <input type="text" placeholder="Nama Lengkap" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        <input type="email" placeholder="Email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        <textarea placeholder="Pesan Anda" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+                        <button type="submit" class="w-full bg-amber-500 text-white py-2 rounded-lg hover:bg-amber-600 transition">
+                            Kirim Pesan
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 Akademi Belajar. Semua hak dilindungi.</p>
+            <div class="mt-4 space-x-4">
+                <a href="#" class="hover:text-amber-500 transition"><i class="fab fa-facebook text-2xl"></i></a>
+                <a href="#" class="hover:text-amber-500 transition"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="#" class="hover:text-amber-500 transition"><i class="fab fa-twitter text-2xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Pemesanan -->
+    <div id="bookingModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold">Formulir Pemesanan Kelas</h3>
+                    <button onclick="closeBookingModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <form id="bookingForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Kelas yang Dipilih</label>
+                        <input type="text" id="selectedClass" readonly class="w-full px-4 py-2 border rounded-lg bg-gray-50">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Tipe Akun</label>
+                        <select id="accountType" onchange="toggleFamilySection()" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <option value="individual">Individual</option>
+                            <option value="family">Akun Keluarga (Orang Tua)</option>
+                        </select>
+                    </div>
+
+                    <div id="parentSection" class="hidden">
+                        <label class="block text-sm font-semibold mb-2">Nama Orang Tua/Wali</label>
+                        <input type="text" id="parentName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+
+                    <div id="participantsSection">
+                        <label class="block text-sm font-semibold mb-2">Nama Peserta</label>
+                        <input type="text" id="participant1" class="w-full px-4 py-2 border rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Nama Peserta 1" required>
+                        <div id="additionalParticipants"></div>
+                        <button type="button" onclick="addParticipant()" class="text-amber-500 text-sm font-semibold hover:text-amber-600 mt-2">
+                            <i class="fas fa-plus mr-1"></i>Tambah Peserta Lainnya
+                        </button>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Email</label>
+                            <input type="email" id="email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Nomor Telepon</label>
+                            <input type="tel" id="phone" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Pilih Instruktur</label>
+                        <select id="instructor" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <option value="">Pilih Instruktur (Opsional)</option>
+                            <option value="sarah">Sarah Johnson - Bahasa & Seni</option>
+                            <option value="david">David Chen - Matematika & Sains</option>
+                            <option value="maria">Maria Garcia - Pemrograman</option>
+                            <option value="john">John Smith - Musik & Olahraga</option>
+                            <option value="lisa">Lisa Anderson - Anak Usia Dini</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Jadwal Preferensi</label>
+                        <select id="schedule" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <option value="weekday-morning">Senin-Jumat Pagi (08:00-12:00)</option>
+                            <option value="weekday-afternoon">Senin-Jumat Siang (13:00-17:00)</option>
+                            <option value="weekday-evening">Senin-Jumat Malam (18:00-20:00)</option>
+                            <option value="weekend-morning">Sabtu-Minggu Pagi (08:00-12:00)</option>
+                            <option value="weekend-afternoon">Sabtu-Minggu Siang (13:00-17:00)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Metode Pembayaran</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="radio" name="payment" value="full" checked onchange="updatePayment()" class="mr-2">
+                                <span>Pembayaran Penuh</span>
+                                <span class="ml-auto font-bold text-green-600">Diskon 10%</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="payment" value="deposit" onchange="updatePayment()" class="mr-2">
+                                <span>Deposit 30% (Sisa dibayar sebelum kelas dimulai)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="flex justify-between mb-2">
+                            <span>Harga Kelas:</span>
+                            <span class="font-semibold">Rp 2.000.000</span>
+                        </div>
+                        <div id="discountSection" class="flex justify-between mb-2 text-green-600">
+                            <span>Diskon Pembayaran Penuh:</span>
+                            <span class="font-semibold">- Rp 200.000</span>
+                        </div>
+                        <div class="border-t pt-2 flex justify-between text-lg font-bold">
+                            <span>Total Pembayaran:</span>
+                            <span id="totalAmount" class="text-amber-600">Rp 1.800.000</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="flex items-start">
+                            <input type="checkbox" required class="mr-2 mt-1">
+                            <span class="text-sm text-gray-600">Saya setuju dengan <a href="#" class="text-amber-500 hover:underline">syarat dan ketentuan</a> serta <a href="#" class="text-amber-500 hover:underline">kebijakan privasi</a></span>
+                        </label>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button type="button" onclick="closeBookingModal()" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-400 transition font-semibold">
+                            Batal
+                        </button>
+                        <button type="submit" class="flex-1 bg-amber-500 text-white py-3 rounded-lg hover:bg-amber-600 transition font-semibold">
+                            <i class="fas fa-check mr-2"></i>Konfirmasi Pemesanan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi -->
+    <div id="confirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-md w-full p-8 text-center animate-slide">
+            <div class="text-green-500 text-6xl mb-4">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4">Pemesanan Berhasil!</h3>
+            <p class="text-gray-600 mb-6">
+                Terima kasih atas pemesanan Anda. Kami telah mengirimkan konfirmasi dan detail pembayaran ke email Anda.
+            </p>
+            <div class="bg-gray-50 p-4 rounded-lg mb-6 text-left">
+                <p class="text-sm mb-2"><strong>Nomor Pemesanan:</strong> <span id="bookingNumber" class="text-amber-600"></span></p>
+                <p class="text-sm mb-2"><strong>Kelas:</strong> <span id="confirmedClass"></span></p>
+                <p class="text-sm"><strong>Total:</strong> <span id="confirmedAmount" class="text-green-600 font-bold"></span></p>
+            </div>
+            <button onclick="closeConfirmationModal()" class="w-full bg-amber-500 text-white py-3 rounded-lg hover:bg-amber-600 transition font-semibold">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Daftar Tunggu -->
+    <div id="waitlistModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-md w-full p-8 animate-slide">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">Daftar Tunggu</h3>
+                <button onclick="closeWaitlistModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <form id="waitlistForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Kelas</label>
+                    <input type="text" id="waitlistClass" readonly class="w-full px-4 py-2 border rounded-lg bg-gray-50">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Nama Lengkap</label>
+                    <input type="text" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Email</label>
+                    <input type="email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Nomor Telepon</label>
+                    <input type="tel" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition font-semibold">
+                    Daftar ke Waiting List
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let participantCount = 1;
+        let selectedClassName = '';
+        let selectedClassType = '';
+
+        // Toggle Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Show Booking Modal
+        function showBookingModal() {
+            document.getElementById('bookingModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Booking Modal
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            resetBookingForm();
+        }
+
+        // Book Class
+        function bookClass(className, classType) {
+            selectedClassName = className;
+            selectedClassType = classType;
+            document.getElementById('selectedClass').value = className;
+            showBookingModal();
+        }
+
+        // Toggle Family Section
+        function toggleFamilySection() {
+            const accountType = document.getElementById('accountType').value;
+            const parentSection = document.getElementById('parentSection');
+            
+            if (accountType === 'family') {
+                parentSection.classList.remove('hidden');
+            } else {
+                parentSection.classList.add('hidden');
+            }
+        }
+
+        // Add Participant
+        function addParticipant() {
+            if (participantCount >= 5) {
+                alert('Maksimal 5 peserta per pemesanan');
+                return;
+            }
+            
+            participantCount++;
+            const container = document.getElementById('additionalParticipants');
+            const div = document.createElement('div');
+            div.className = 'relative';
+            div.innerHTML = `
+                <input type="text" class="w-full px-4 py-2 border rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Nama Peserta ${participantCount}">
+                <button type="button" onclick="this.parentElement.remove(); participantCount--;" class="absolute right-2 top-2 text-red-500 hover:text-red-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.appendChild(div);
+        }
+
+        // Update Payment
+        function updatePayment() {
+            const paymentType = document.querySelector('input[name="payment"]:checked').value;
+            const discountSection = document.getElementById('discountSection');
+            const totalAmount = document.getElementById('totalAmount');
+            
+            if (paymentType === 'full') {
+                discountSection.classList.remove('hidden');
+                totalAmount.textContent = 'Rp 1.800.000';
+            } else {
+                discountSection.classList.add('hidden');
+                totalAmount.textContent = 'Rp 600.000 (Deposit 30%)';
+            }
+        }
+
+        // Reset Booking Form
+        function resetBookingForm() {
+            document.getElementById('bookingForm').reset();
+            document.getElementById('additionalParticipants').innerHTML = '';
+            participantCount = 1;
+            document.getElementById('parentSection').classList.add('hidden');
+            updatePayment();
+        }
+
+        // Handle Booking Form Submit
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Generate booking number
+            const bookingNumber = 'BK' + Date.now().toString().slice(-8);
+            const totalAmount = document.getElementById('totalAmount').textContent;
+            
+            // Update confirmation modal
+            document.getElementById('bookingNumber').textContent = bookingNumber;
+            document.getElementById('confirmedClass').textContent = selectedClassName;
+            document.getElementById('confirmedAmount').textContent = totalAmount;
+            
+            // Close booking modal and show confirmation
+            closeBookingModal();
+            document.getElementById('confirmationModal').classList.remove('hidden');
+            
+            // Simulate sending confirmation email and receipt
+            console.log('Sending confirmation email...');
+            console.log('Booking details:', {
+                bookingNumber: bookingNumber,
+                className: selectedClassName,
+                amount: totalAmount,
+                email: document.getElementById('email').value
+            });
+            
+            // In production, this would trigger:
+            // - Email confirmation
+            // - Payment receipt
+            // - CRM integration (HubSpot/Mailchimp)
+            // - Xero integration via Zapier
+            // - Database update
+        });
+
+        // Close Confirmation Modal
+        function closeConfirmationModal() {
+            document.getElementById('confirmationModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Join Waitlist
+        function joinWaitlist(className) {
+            document.getElementById('waitlistClass').value = className;
+            document.getElementById('waitlistModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Waitlist Modal
+        function closeWaitlistModal() {
+            document.getElementById('waitlistModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            document.getElementById('waitlistForm').reset();
+        }
+
+        // Handle Waitlist Form Submit
+        document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            alert('Anda telah berhasil didaftarkan ke waiting list! Kami akan menghubungi Anda ketika ada tempat tersedia.');
+            closeWaitlistModal();
+            
+            // In production, this would:
+            // - Add to waitlist database
+            // - Send confirmation email
+            // - Update CRM
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        // Close mobile menu if open
+                        document.getElementById('mobileMenu').classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.id === 'bookingModal') {
+                closeBookingModal();
+            }
+            if (e.target.id === 'confirmationModal') {
+                closeConfirmationModal();
+            }
+            if (e.target.id === 'waitlistModal') {
+                closeWaitlistModal();
+            }
+        });
+    </script>
+</body>
+</html>

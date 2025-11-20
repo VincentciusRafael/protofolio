@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Akademi Belajar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .sidebar-link:hover { background-color: rgba(245, 158, 11, 0.1); }
+        .sidebar-link.active { background-color: rgba(245, 158, 11, 0.2); border-left: 4px solid #f59e0b; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide { animation: slideIn 0.3s ease-out; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-64 bg-white shadow-lg flex-shrink-0 overflow-y-auto">
+            <div class="p-6 border-b">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-3xl text-amber-500"></i>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800">Akademi Belajar</h1>
+                        <p class="text-xs text-gray-500">Admin Dashboard</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="p-4">
+                <a href="#" onclick="showSection('dashboard')" class="sidebar-link active flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 text-gray-700">
+                    <i class="fas fa-home w-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" onclick="showSection('bookings')" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 text-gray-700">
+                    <i class="fas fa-calendar-check w-5"></i>
+                    <span>Pemesanan</span>
+                </a>
+                <a href="#" onclick="showSection('classes')" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 text-gray-700">
+                    <i class="fas fa-chalkboard-teacher w-5"></i>
+                    <span>Kelola Kelas</span>
+                </a>
+                <a href="#" onclick="showSection('students')" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 text-gray-700">
+                    <i class="fas fa-user-graduate w-5"></i>
+                    <span>Siswa</span>
+                </a>
+                <a href="#" onclick="showSection('instructors')" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 text-gray-700">
+                    <i class="fas fa-users w-5"></i>
+                    <span>Instruktur</span>
+                </a>
+                <a href="#" onclick="showSection('waitlist')" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 text-gray-700">
+                    <i class="fas fa-list-ul w-5"></i>
+                    <span>Daftar Tunggu</span>
+                </a>
+                <a href="#" onclick="showSection('payments')" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 text-gray-700">
+                    <i class="fas fa-money-bill-wave w-5"></i>
+                    <span>Pembayaran</span>
+                </a>
+                <a href="#" onclick="showSection('reports')" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 text-gray-700">
+                    <i class="fas fa-chart-bar w-5"></i>
+                    <span>Laporan</span>
+                </a>
+                <a href="#" onclick="showSection('content')" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 text-gray-700">
+                    <i class="fas fa-edit w-5"></i>
+                    <span>Kelola Konten</span>
+                </a>
+                <a href="#" onclick="showSection('integrations')" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 text-gray-700">
+                    <i class="fas fa-plug w-5"></i>
+                    <span>Integrasi</span>
+                </a>
+                <a href="#" onclick="showSection('settings')" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 text-gray-700">
+                    <i class="fas fa-cog w-5"></i>
+                    <span>Pengaturan</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Bar -->
+            <header class="bg-white shadow-sm border-b px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <button onclick="toggleSidebar()" class="md:hidden text-gray-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h2 id="pageTitle" class="text-2xl font-bold text-gray-800">Dashboard</h2>
+                    <div class="flex items-center space-x-4">
+                        <button class="relative text-gray-600 hover:text-amber-500">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                        </button>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center text-white font-bold">
+                                A
+                            </div>
+                            <div class="hidden md:block">
+                                <p class="text-sm font-semibold">Admin User</p>
+                                <p class="text-xs text-gray-500">admin@akademi.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <!-- Dashboard Section -->
+                <div id="dashboard-section" class="section">
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-500 text-sm">Total Pendaftaran</p>
+                                    <h3 class="text-3xl font-bold text-gray-800 mt-2">284</h3>
+                                    <p class="text-green-600 text-sm mt-2"><i class="fas fa-arrow-up"></i> 12% dari bulan lalu</p>
+                                </div>
+                                <div class="bg-blue-100 rounded-full p-4">
+                                    <i class="fas fa-users text-blue-600 text-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-500 text-sm">Pendapatan Bulan Ini</p>
+                                    <h3 class="text-3xl font-bold text-gray-800 mt-2">Rp 52M</h3>
+                                    <p class="text-green-600 text-sm mt-2"><i class="fas fa-arrow-up"></i> 8% dari bulan lalu</p>
+                                </div>
+                                <div class="bg-green-100 rounded-full p-4">
+                                    <i class="fas fa-dollar-sign text-green-600 text-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-500 text-sm">Kelas Aktif</p>
+                                    <h3 class="text-3xl font-bold text-gray-800 mt-2">24</h3>
+                                    <p class="text-gray-600 text-sm mt-2">8 akan dimulai minggu ini</p>
+                                </div>
+                                <div class="bg-amber-100 rounded-full p-4">
+                                    <i class="fas fa-chalkboard text-amber-600 text-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-500 text-sm">Daftar Tunggu</p>
+                                    <h3 class="text-3xl font-bold text-gray-800 mt-2">47</h3>
+                                    <p class="text-orange-600 text-sm mt-2">Dari 8 kelas penuh</p>
+                                </div>
+                                <div class="bg-red-100 rounded-full p-4">
+                                    <i class="fas fa-list text-red-600 text-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts -->
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-bold mb-4">Pendapatan 6 Bulan Terakhir</h3>
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-bold mb-4">Distribusi Kelas</h3>
+                            <canvas id="classDistributionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Recent Bookings -->
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="p-6 border-b flex justify-between items-center">
+                            <h3 class="text-lg font-bold">Pemesanan Terbaru</h3>
+                            <button onclick="showSection('bookings')" class="text-amber-500 text-sm font-semibold hover:text-amber-600">Lihat Semua →</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kelas</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 text-sm">#BK00123</td>
+                                        <td class="px-6 py-4 text-sm font-medium">Sarah Johnson</td>
+                                        <td class="px-6 py-4 text-sm">Bahasa Inggris Dewasa</td>
+                                        <td class="px-6 py-4 text-sm">07 Okt 2025</td>
+                                        <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Lunas</span></td>
+                                        <td class="px-6 py-4 text-sm font-semibold">Rp 1.800.000</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 text-sm">#BK00122</td>
+                                        <td class="px-6 py-4 text-sm font-medium">Michael Chen</td>
+                                        <td class="px-6 py-4 text-sm">Pemrograman Dewasa</td>
+                                        <td class="px-6 py-4 text-sm">07 Okt 2025</td>
+                                        <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Deposit</span></td>
+                                        <td class="px-6 py-4 text-sm font-semibold">Rp 600.000</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 text-sm">#BK00121</td>
+                                        <td class="px-6 py-4 text-sm font-medium">Lisa Anderson</td>
+                                        <td class="px-6 py-4 text-sm">Robotik Anak</td>
+                                        <td class="px-6 py-4 text-sm">06 Okt 2025</td>
+                                        <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Lunas</span></td>
+                                        <td class="px-6 py-4 text-sm font-semibold">Rp 1.800.000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bookings Section -->
+                <div id="bookings-section" class="section hidden">
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="p-6 border-b">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+                                <div class="flex space-x-2">
+                                    <button class="px-4 py-2 bg-amber-500 text-white rounded-lg text-sm font-semibold">Semua (284)</button>
+                                    <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm">Pending (12)</button>
+                                    <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm">Lunas (247)</button>
+                                    <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm">Dibatalkan (25)</button>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <input type="text" placeholder="Cari pemesanan..." class="px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200">
+                                        <i class="fas fa-filter mr-2"></i>Filter
+                                    </button>
+                                    <button class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
+                                        <i class="fas fa-download mr-2"></i>Export
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            <input type="checkbox" class="rounded">
+                                        </th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID Booking</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Siswa</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kelas</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Instruktur</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200" id="bookingsTableBody">
+                                    <!-- Data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="p-6 border-t flex items-center justify-between">
+                            <p class="text-sm text-gray-600">Menampilkan 1-10 dari 284 pemesanan</p>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 border rounded text-sm hover:bg-gray-50">Previous</button>
+                                <button class="px-3 py-1 bg-amber-500 text-white rounded text-sm">1</button>
+                                <button class="px-3 py-1 border rounded text-sm hover:bg-gray-50">2</button>
+                                <button class="px-3 py-1 border rounded text-sm hover:bg-gray-50">3</button>
+                                <button class="px-3 py-1 border rounded text-sm hover:bg-gray-50">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Classes Section -->
+                <div id="classes-section" class="section hidden">
+                    <div class="mb-6 flex justify-between items-center">
+                        <h3 class="text-xl font-bold">Kelola Kelas</h3>
+                        <button onclick="showAddClassModal()" class="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">
+                            <i class="fas fa-plus mr-2"></i>Tambah Kelas Baru
+                        </button>
+                    </div>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="classesGrid">
+                        <!-- Classes will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Students Section -->
+                <div id="students-section" class="section hidden">
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="p-6 border-b">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg font-bold">Daftar Siswa</h3>
+                                <div class="flex space-x-2">
+                                    <input type="text" placeholder="Cari siswa..." class="px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <button class="px-4 py-2 bg-amber-500 text-white rounded-lg text-sm hover:bg-amber-600">
+                                        <i class="fas fa-plus mr-2"></i>Tambah Siswa
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-500 text-center py-8">Data siswa akan ditampilkan di sini</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructors Section -->
+                <div id="instructors-section" class="section hidden">
+                    <div class="mb-6 flex justify-between items-center">
+                        <h3 class="text-xl font-bold">Instruktur</h3>
+                        <button onclick="showAddInstructorModal()" class="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">
+                            <i class="fas fa-plus mr-2"></i>Tambah Instruktur
+                        </button>
+                    </div>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="instructorsGrid">
+                        <!-- Instructors will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Waitlist Section -->
+                <div id="waitlist-section" class="section hidden">
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="p-6 border-b">
+                            <h3 class="text-lg font-bold">Daftar Tunggu</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kelas</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telepon</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal Daftar</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200" id="waitlistTableBody">
+                                    <!-- Waitlist data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payments Section -->
+                <div id="payments-section" class="section hidden">
+                    <div class="grid md:grid-cols-3 gap-6 mb-6">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-gray-500 text-sm">Total Pendapatan</p>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-2">Rp 284.500.000</h3>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-gray-500 text-sm">Pembayaran Pending</p>
+                            <h3 class="text-2xl font-bold text-orange-600 mt-2">Rp 12.400.000</h3>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-gray-500 text-sm">Refund Diproses</p>
+                            <h3 class="text-2xl font-bold text-red-600 mt-2">Rp 3.200.000</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="p-6 border-b">
+                            <h3 class="text-lg font-bold">Riwayat Pembayaran</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-500 text-center py-8">Data pembayaran akan ditampilkan di sini</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Section -->
+                <div id="reports-section" class="section hidden">
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-bold mb-4">Laporan Pendaftaran</h3>
+                            <canvas id="registrationReportChart"></canvas>
+                            <button class="mt-4 w-full px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
+                                <i class="fas fa-download mr-2"></i>Download Laporan
+                            </button>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-bold mb-4">Laporan Pembatalan</h3>
+                            <canvas id="cancellationReportChart"></canvas>
+                            <button class="mt-4 w-full px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
+                                <i class="fas fa-download mr-2"></i>Download Laporan
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-bold mb-4">Generate Laporan Custom</h3>
+                        <div class="grid md:grid-cols-4 gap-4">
+                            <select class="px-4 py-2 border rounded-lg">
+                                <option>Pilih Tipe Laporan</option>
+                                <option>Laporan Pendaftaran</option>
+                                <option>Laporan Pendapatan</option>
+                                <option>Laporan Pembatalan</option>
+                                <option>Laporan Instruktur</option>
+                            </select>
+                            <input type="date" class="px-4 py-2 border rounded-lg">
+                            <input type="date" class="px-4 py-2 border rounded-lg">
+                            <button class="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">
+                                Generate
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Section -->
+                <div id="content-section" class="section hidden">
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-bold">Blog Posts</h3>
+                                <button class="text-amber-500 hover:text-amber-600">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <p class="text-gray-600 text-sm">Kelola artikel blog untuk website</p>
+                            <button class="mt-4 w-full px-4 py-2 bg-amber-500 text-white rounded-lg text-sm hover:bg-amber-600">
+                                Kelola Blog
+                            </button>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-bold">Galeri</h3>
+                                <button class="text-amber-500 hover:text-amber-600">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <p class="text-gray-600 text-sm">Upload dan kelola foto kegiatan</p>
+                            <button class="mt-4 w-full px-4 py-2 bg-amber-500 text-white rounded-lg text-sm hover:bg-amber-600">
+                                Kelola Galeri
+                            </button>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-bold">Halaman Website</h3>
+                                <button class="text-amber-500 hover:text-amber-600">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                            <p class="text-gray-600 text-sm">Edit konten halaman Tentang, Kontak, dll</p>
+                            <button class="mt-4 w-full px-4 py-2 bg-amber-500 text-white rounded-lg text-sm hover:bg-amber-600">
+                                Edit Halaman
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Integrations Section -->
+                <div id="integrations-section" class="section hidden">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-file-invoice text-blue-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Xero Accounting</h3>
+                                        <p class="text-sm text-gray-500">Sinkronisasi otomatis invoice dan pembayaran</p>
+                                    </div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                                </label>
+                            </div>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Status:</span>
+                                    <span class="text-green-600 font-semibold">Terhubung</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Terakhir Sync:</span>
+                                    <span>2 jam yang lalu</span>
+                                </div>
+                            </div>
+                            <button class="mt-4 w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200">
+                                Konfigurasi
+                            </button>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-envelope text-orange-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Mailchimp</h3>
+                                        <p class="text-sm text-gray-500">Email marketing dan newsletter</p>
+                                    </div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                                </label>
+                            </div>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Status:</span>
+                                    <span class="text-green-600 font-semibold">Terhubung</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Subscribers:</span>
+                                    <span>1,247</span>
+                                </div>
+                            </div>
+                            <button class="mt-4 w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200">
+                                Konfigurasi
+                            </button>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-at text-red-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">HubSpot CRM</h3>
+                                        <p class="text-sm text-gray-500">Manajemen hubungan pelanggan</p>
+                                    </div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                                </label>
+                            </div>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Status:</span>
+                                    <span class="text-gray-400 font-semibold">Tidak Terhubung</span>
+                                </div>
+                            </div>
+                            <button class="mt-4 w-full px-4 py-2 bg-amber-500 text-white rounded-lg text-sm hover:bg-amber-600">
+                                Hubungkan
+                            </button>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-bolt text-purple-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Zapier</h3>
+                                        <p class="text-sm text-gray-500">Automasi workflow dengan 3000+ apps</p>
+                                    </div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                                </label>
+                            </div>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Status:</span>
+                                    <span class="text-green-600 font-semibold">Terhubung</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Active Zaps:</span>
+                                    <span>5</span>
+                                </div>
+                            </div>
+                            <button class="mt-4 w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200">
+                                Kelola Zaps
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Section -->
+                <div id="settings-section" class="section hidden">
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-bold mb-4">Pengaturan Umum</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">Nama Akademi</label>
+                                    <input type="text" value="Akademi Belajar" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                </div>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">Email</label>
+                                        <input type="email" value="info@akademibelajar.com" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold mb-2">Telepon</label>
+                                        <input type="tel" value="(031) 1234-5678" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">Alamat</label>
+                                    <textarea rows="3" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">Jl. Pendidikan No. 123, Surabaya</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-bold mb-4">Pengaturan Email Otomatis</h3>
+                            <div class="space-y-4">
+                                <label class="flex items-center justify-between p-4 border rounded-lg">
+                                    <div>
+                                        <p class="font-semibold">Konfirmasi Pemesanan</p>
+                                        <p class="text-sm text-gray-500">Kirim email konfirmasi setelah pemesanan berhasil</p>
+                                    </div>
+                                    <input type="checkbox" checked class="w-5 h-5 text-amber-500 rounded">
+                                </label>
+                                <label class="flex items-center justify-between p-4 border rounded-lg">
+                                    <div>
+                                        <p class="font-semibold">Pengingat Pembayaran</p>
+                                        <p class="text-sm text-gray-500">Kirim pengingat 3 hari sebelum jatuh tempo</p>
+                                    </div>
+                                    <input type="checkbox" checked class="w-5 h-5 text-amber-500 rounded">
+                                </label>
+                                <label class="flex items-center justify-between p-4 border rounded-lg">
+                                    <div>
+                                        <p class="font-semibold">Pengingat Kelas</p>
+                                        <p class="text-sm text-gray-500">Kirim pengingat 1 hari sebelum kelas dimulai</p>
+                                    </div>
+                                    <input type="checkbox" checked class="w-5 h-5 text-amber-500 rounded">
+                                </label>
+                                <label class="flex items-center justify-between p-4 border rounded-lg">
+                                    <div>
+                                        <p class="font-semibold">Tanda Terima Pembayaran</p>
+                                        <p class="text-sm text-gray-500">Kirim tanda terima setelah pembayaran diterima</p>
+                                    </div>
+                                    <input type="checkbox" checked class="w-5 h-5 text-amber-500 rounded">
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-bold mb-4">Pengaturan Pembayaran</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">Diskon Pembayaran Penuh (%)</label>
+                                    <input type="number" value="10" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">Persentase Deposit (%)</label>
+                                    <input type="number" value="30" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">Batas Waktu Pembayaran (hari)</label>
+                                    <input type="number" value="7" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end space-x-4">
+                            <button class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Reset</button>
+                            <button class="px-6 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">Simpan Perubahan</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Add Class Modal -->
+    <div id="addClassModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold">Tambah Kelas Baru</h3>
+                    <button onclick="closeAddClassModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Nama Kelas</label>
+                        <input type="text" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Kategori</label>
+                        <select class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <option>Dewasa</option>
+                            <option>Anak-anak</option>
+                            <option>Liburan</option>
+                            <option>Les Privat</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Deskripsi</label>
+                        <textarea rows="3" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Durasi (minggu)</label>
+                            <input type="number" value="8" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Kapasitas Maksimal</label>
+                            <input type="number" value="15" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Harga (Rp)</label>
+                            <input type="number" value="2000000" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Instruktur</label>
+                            <select class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <option>Sarah Johnson</option>
+                                <option>David Chen</option>
+                                <option>Maria Garcia</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Tanggal Mulai</label>
+                            <input type="date" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Tanggal Selesai</label>
+                            <input type="date" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <button type="button" onclick="closeAddClassModal()" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-400 transition font-semibold">
+                            Batal
+                        </button>
+                        <button type="submit" class="flex-1 bg-amber-500 text-white py-3 rounded-lg hover:bg-amber-600 transition font-semibold">
+                            Simpan Kelas
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Instructor Modal -->
+    <div id="addInstructorModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-md w-full animate-slide">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold">Tambah Instruktur</h3>
+                    <button onclick="closeAddInstructorModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Nama Lengkap</label>
+                        <input type="text" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Email</label>
+                        <input type="email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Telepon</label>
+                        <input type="tel" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Spesialisasi</label>
+                        <input type="text" placeholder="contoh: Bahasa Inggris, Matematika" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Bio</label>
+                        <textarea rows="3" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+                    </div>
+                    <div class="flex gap-4">
+                        <button type="button" onclick="closeAddInstructorModal()" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-400 transition font-semibold">
+                            Batal
+                        </button>
+                        <button type="submit" class="flex-1 bg-amber-500 text-white py-3 rounded-lg hover:bg-amber-600 transition font-semibold">
+                            Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        const bookingsData = [
+            { id: 'BK00123', name: 'Sarah Johnson', class: 'Bahasa Inggris Dewasa', instructor: 'Sarah Johnson', date: '2025-10-07', status: 'paid', amount: 1800000 },
+            { id: 'BK00122', name: 'Michael Chen', class: 'Pemrograman Dewasa', instructor: 'Maria Garcia', date: '2025-10-07', status: 'deposit', amount: 600000 },
+            { id: 'BK00121', name: 'Lisa Anderson', class: 'Robotik Anak', instructor: 'David Chen', date: '2025-10-06', status: 'paid', amount: 1800000 },
+            { id: 'BK00120', name: 'John Smith', class: 'Matematika Anak', instructor: 'David Chen', date: '2025-10-06', status: 'pending', amount: 2000000 },
+            { id: 'BK00119', name: 'Emma Wilson', class: 'Seni & Desain Dewasa', instructor: 'Sarah Johnson', date: '2025-10-05', status: 'paid', amount: 1800000 },
+        ];
+
+        const classesData = [
+            { name: 'Bahasa Inggris Dewasa', category: 'Dewasa', enrolled: 10, capacity: 15, status: 'active', price: 2000000 },
+            { name: 'Pemrograman Dewasa', category: 'Dewasa', enrolled: 8, capacity: 12, status: 'active', price: 2500000 },
+            { name: 'Seni & Desain Dewasa', category: 'Dewasa', enrolled: 10, capacity: 10, status: 'full', price: 2000000 },
+            { name: 'Robotik Anak', category: 'Anak', enrolled: 12, capacity: 15, status: 'active', price: 1800000 },
+            { name: 'Matematika Anak', category: 'Anak', enrolled: 7, capacity: 10, status: 'active', price: 1500000 },
+            { name: 'Kamp Musim Panas', category: 'Liburan', enrolled: 5, capacity: 20, status: 'active', price: 3000000 },
+        ];
+
+        const instructorsData = [
+            { name: 'Sarah Johnson', specialization: 'Bahasa & Seni', classes: 3, rating: 4.9 },
+            { name: 'David Chen', specialization: 'Matematika & Sains', classes: 2, rating: 4.8 },
+            { name: 'Maria Garcia', specialization: 'Pemrograman', classes: 2, rating: 4.9 },
+            { name: 'John Smith', specialization: 'Musik & Olahraga', classes: 1, rating: 4.7 },
+            { name: 'Lisa Anderson', specialization: 'Anak Usia Dini', classes: 2, rating: 5.0 },
+        ];
+
+        const waitlistData = [
+            { name: 'Robert Brown', class: 'Seni & Desain Dewasa', email: 'robert@email.com', phone: '081234567890', date: '2025-10-05' },
+            { name: 'Jennifer Lee', class: 'Seni & Desain Dewasa', email: 'jennifer@email.com', phone: '081234567891', date: '2025-10-04' },
+            { name: 'Daniel Martinez', class: 'Pemrograman Dewasa', email: 'daniel@email.com', phone: '081234567892', date: '2025-10-03' },
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            populateBookingsTable();
+            populateClassesGrid();
+            populateInstructorsGrid();
+            populateWaitlistTable();
+            initCharts();
+        });
+
+        // Navigation
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.remove('hidden');
+            
+            // Update active nav
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.closest('.sidebar-link').classList.add('active');
+            
+            // Update page title
+            const titles = {
+                'dashboard': 'Dashboard',
+                'bookings': 'Pemesanan',
+                'classes': 'Kelola Kelas',
+                'students': 'Siswa',
+                'instructors': 'Instruktur',
+                'waitlist': 'Daftar Tunggu',
+                'payments': 'Pembayaran',
+                'reports': 'Laporan',
+                'content': 'Kelola Konten',
+                'integrations': 'Integrasi',
+                'settings': 'Pengaturan'
+            };
+            document.getElementById('pageTitle').textContent = titles[sectionName];
+        }
+
+        // Toggle Sidebar (mobile)
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('hidden');
+        }
+
+        // Populate Bookings Table
+        function populateBookingsTable() {
+            const tbody = document.getElementById('bookingsTableBody');
+            tbody.innerHTML = bookingsData.map(booking => {
+                const statusBadges = {
+                    'paid': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Lunas</span>',
+                    'deposit': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Deposit</span>',
+                    'pending': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">Pending</span>',
+                    'cancelled': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Dibatalkan</span>'
+                };
+                
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4"><input type="checkbox" class="rounded"></td>
+                        <td class="px-6 py-4 text-sm font-medium">${booking.id}</td>
+                        <td class="px-6 py-4 text-sm">${booking.name}</td>
+                        <td class="px-6 py-4 text-sm">${booking.class}</td>
+                        <td class="px-6 py-4 text-sm">${booking.instructor}</td>
+                        <td class="px-6 py-4 text-sm">${booking.date}</td>
+                        <td class="px-6 py-4">${statusBadges[booking.status]}</td>
+                        <td class="px-6 py-4 text-sm font-semibold">Rp ${booking.amount.toLocaleString('id-ID')}</td>
+                        <td class="px-6 py-4">
+                            <button class="text-blue-600 hover:text-blue-800 mr-2" title="Lihat Detail">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="text-amber-600 hover:text-amber-800 mr-2" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="text-red-600 hover:text-red-800" title="Hapus">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Populate Classes Grid
+        function populateClassesGrid() {
+            const grid = document.getElementById('classesGrid');
+            grid.innerHTML = classesData.map(cls => {
+                const statusBadges = {
+                    'active': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Aktif</span>',
+                    'full': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Penuh</span>',
+                    'upcoming': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Akan Datang</span>',
+                    'completed': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">Selesai</span>'
+                };
+                
+                const percentage = (cls.enrolled / cls.capacity * 100).toFixed(0);
+                
+                return `
+                    <div class="bg-white rounded-lg shadow p-6 hover:shadow-xl transition">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">${cls.name}</h3>
+                                <span class="text-xs text-gray-500">${cls.category}</span>
+                            </div>
+                            ${statusBadges[cls.status]}
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Peserta</span>
+                                <span class="font-semibold">${cls.enrolled}/${cls.capacity}</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-amber-500 h-2 rounded-full" style="width: ${percentage}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-sm text-gray-600 mb-4">
+                            <p>Harga: <strong class="text-gray-800">Rp ${cls.price.toLocaleString('id-ID')}</strong></p>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button class="flex-1 px-3 py-2 bg-amber-500 text-white rounded text-sm hover:bg-amber-600">
+                                <i class="fas fa-edit mr-1"></i>Edit
+                            </button>
+                            <button class="px-3 py-2 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200">
+                                <i class="fas fa-users"></i>
+                            </button>
+                            <button class="px-3 py-2 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Populate Instructors Grid
+        function populateInstructorsGrid() {
+            const grid = document.getElementById('instructorsGrid');
+            grid.innerHTML = instructorsData.map(instructor => {
+                const initials = instructor.name.split(' ').map(n => n[0]).join('');
+                const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-pink-500', 'bg-indigo-500'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                return `
+                    <div class="bg-white rounded-lg shadow p-6 text-center hover:shadow-xl transition">
+                        <div class="w-20 h-20 ${randomColor} rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
+                            ${initials}
+                        </div>
+                        <h3 class="font-bold text-lg mb-1">${instructor.name}</h3>
+                        <p class="text-sm text-gray-500 mb-3">${instructor.specialization}</p>
+                        
+                        <div class="flex justify-center items-center space-x-1 mb-3">
+                            ${[...Array(5)].map((_, i) => 
+                                `<i class="fas fa-star text-xs ${i < Math.floor(instructor.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                            ).join('')}
+                            <span class="text-sm text-gray-600 ml-1">${instructor.rating}</span>
+                        </div>
+                        
+                        <div class="text-sm text-gray-600 mb-4">
+                            <p>${instructor.classes} Kelas Aktif</p>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button class="flex-1 px-3 py-2 bg-amber-500 text-white rounded text-sm hover:bg-amber-600">
+                                <i class="fas fa-edit mr-1"></i>Edit
+                            </button>
+                            <button class="px-3 py-2 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Populate Waitlist Table
+        function populateWaitlistTable() {
+            const tbody = document.getElementById('waitlistTableBody');
+            tbody.innerHTML = waitlistData.map(item => {
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 text-sm font-medium">${item.name}</td>
+                        <td class="px-6 py-4 text-sm">${item.class}</td>
+                        <td class="px-6 py-4 text-sm">${item.email}</td>
+                        <td class="px-6 py-4 text-sm">${item.phone}</td>
+                        <td class="px-6 py-4 text-sm">${item.date}</td>
+                        <td class="px-6 py-4">
+                            <button class="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 mr-2">
+                                Pindahkan ke Kelas
+                            </button>
+                            <button class="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700">
+                                Hapus
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Initialize Charts
+        function initCharts() {
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart');
+            if (revenueCtx) {
+                new Chart(revenueCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt'],
+                        datasets: [{
+                            label: 'Pendapatan (Juta Rp)',
+                            data: [42, 45, 48, 50, 49, 52],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + 'M';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Class Distribution Chart
+            const classDistCtx = document.getElementById('classDistributionChart');
+            if (classDistCtx) {
+                new Chart(classDistCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Dewasa', 'Anak-anak', 'Liburan', 'Les Privat'],
+                        datasets: [{
+                            data: [35, 45, 10, 10],
+                            backgroundColor: ['#f59e0b', '#3b82f6', '#10b981', '#8b5cf6']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Registration Report Chart
+            const regReportCtx = document.getElementById('registrationReportChart');
+            if (regReportCtx) {
+                new Chart(regReportCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+                        datasets: [{
+                            label: 'Pendaftaran',
+                            data: [42, 45, 38, 52, 48, 55],
+                            backgroundColor: '#f59e0b'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Cancellation Report Chart
+            const cancelReportCtx = document.getElementById('cancellationReportChart');
+            if (cancelReportCtx) {
+                new Chart(cancelReportCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+                        datasets: [{
+                            label: 'Pembatalan',
+                            data: [3, 2, 4, 3, 2, 1],
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Modal Functions
+        function showAddClassModal() {
+            document.getElementById('addClassModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAddClassModal() {
+            document.getElementById('addClassModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function showAddInstructorModal() {
+            document.getElementById('addInstructorModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAddInstructorModal() {
+            document.getElementById('addInstructorModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.id === 'addClassModal') {
+                closeAddClassModal();
+            }
+            if (e.target.id === 'addInstructorModal') {
+                closeAddInstructorModal();
+            }
+        });
+
+        // Export functionality (placeholder)
+        function exportData(format) {
+            alert(`Mengekspor data dalam format ${format}. Fitur ini akan diimplementasikan di backend.`);
+        }
+
+        // Notification click handler
+        document.querySelector('.fa-bell').parentElement.addEventListener('click', function() {
+            alert('Notifikasi:\n\n1. 3 pembayaran pending perlu dikonfirmasi\n2. Kelas Robotik akan dimulai dalam 2 hari\n3. 5 siswa baru mendaftar hari ini');
+        });
+
+        // Auto-refresh dashboard stats every 30 seconds (in production)
+        // setInterval(() => {
+        //     console.log('Refreshing dashboard data...');
+        //     // Fetch updated data from backend
+        // }, 30000);
+    </script>
+</body>
+</html>
